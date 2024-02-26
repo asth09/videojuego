@@ -8,6 +8,7 @@ local enemyLimit = 10
 local bulletHeight = 10
 local enemyWidth = 50
 local enemyHeight = 50
+local bulletWidth = 10  -- Definir la variable bulletWidth y asignarle un valor de 10
 
 
 -- Cargar imágenes
@@ -21,6 +22,7 @@ function love.update(dt)
         player.x = player.x - player.speed * dt
     elseif love.keyboard.isDown("right") then
         player.x = player.x + player.speed * dt
+        checkCollisions()
     end
 
     -- Disparo de balas
@@ -65,6 +67,41 @@ function love.draw()
     -- Dibujar enemigos
     for _, enemy in ipairs(enemies) do
         love.graphics.draw(enemyImg, enemy.x, enemy.y, 0, enemyWidth/enemyImg:getWidth(), enemyHeight/enemyImg:getHeight())
+    end
+end
+
+function checkCollision(x1, y1, w1, h1, x2, y2, w2, h2)
+    return x1 < x2 + w2 and
+           x2 < x1 + w1 and
+           y1 < y2 + h2 and
+           y2 < y1 + h1
+end
+
+function checkCollisions()
+    if checkCollision(player.x, player.y, player.width, player.height, enemy.x, enemy.y, enemy.width, enemy.height) then
+        -- Realizar acciones cuando hay colisión
+    end
+end
+
+function checkCollisions()
+    -- Colisiones entre balas y enemigos
+    for i, bullet in ipairs(bullets) do
+        for j, enemy in ipairs(enemies) do
+            if checkCollision(bullet.x, bullet.y, bulletWidth, bulletHeight, enemy.x, enemy.y, enemyWidth, enemyHeight) then
+                print("Colisión bala-enemigo")
+                table.remove(bullets, i)
+                table.remove(enemies, j)
+            end
+        end
+    end
+
+    -- Colisiones entre jugador y enemigos
+    for i, enemy in ipairs(enemies) do
+        if checkCollision(player.x, player.y, player.width, player.height, enemy.x, enemy.y, enemyWidth, enemyHeight) then
+            print("Colisión jugador-enemigo")
+            -- Aquí puedes agregar la lógica para que el jugador muera
+            -- Por ejemplo: reiniciar posición del jugador o terminar el juego
+        end
     end
 end
 
