@@ -25,7 +25,7 @@ function love.update(dt)
         checkCollisions()
     end
 
-    -- Disparo de balas
+    -- Disparos de balas
     if love.keyboard.isDown("space") then
         local bullet = { x = player.x + playerImg:getWidth() / 2, y = player.y }
         table.insert(bullets, bullet)
