@@ -29,8 +29,9 @@ function love.update(dt)
     if love.keyboard.isDown("space") then
         local bullet = { x = player.x + playerImg:getWidth() / 2, y = player.y }
         table.insert(bullets, bullet)
-    end
 
+    end
+    
     -- Creación de enemigos
     enemyTimer = enemyTimer + dt
     if enemyTimer > 1 and #enemies < enemyLimit then
